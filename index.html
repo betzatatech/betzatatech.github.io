@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard VERTIKAL SMA 2026</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-content">
+      <h1>VERTIKAL SMA 2026</h1>
+      <p class="subtitle">Dashboard Pemantauan 7 Kebiasaan Anak Indonesia Hebat</p>
+    </div>
+  </header>
+
+  <!-- FILTER BAR -->
+  <section class="filter-bar">
+    <div class="filter-group">
+      <label for="filterKelas">Kelas</label>
+      <select id="filterKelas">
+        <option value="all">Semua Kelas</option>
+        <option value="X">Kelas X</option>
+        <option value="XI">Kelas XI</option>
+        <option value="XII">Kelas XII</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filterGender">Jenis Kelamin</label>
+      <select id="filterGender">
+        <option value="all">Semua</option>
+        <option value="Laki-laki">Laki-laki</option>
+        <option value="Perempuan">Perempuan</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filterGelombang">Gelombang Survei</label>
+      <select id="filterGelombang">
+        <option value="all">Semua Gelombang</option>
+        <option value="1">Gelombang 1 (Minggu 1)</option>
+        <option value="2">Gelombang 2 (Minggu 2)</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- SUMMARY CARDS -->
+  <section class="summary-cards">
+    <div class="card">
+      <h3>Total Responden</h3>
+      <p class="card-value" id="totalResponden">0</p>
+    </div>
+    <div class="card">
+      <h3>Skor Rata-rata</h3>
+      <p class="card-value" id="skorRataRata">0%</p>
+    </div>
+    <div class="card card-highlight">
+      <h3>Kategori Tertinggi</h3>
+      <p class="card-value small-text" id="kategoriTertinggi">-</p>
+    </div>
+    <div class="card card-alert">
+      <h3>Kategori Terendah</h3>
+      <p class="card-value small-text" id="kategoriTerendah">-</p>
+    </div>
+  </section>
+
+  <!-- INSIGHT SECTION (NEW) -->
+  <section class="insight-section">
+    <div class="insight-box positive">
+      <div class="icon">✦</div>
+      <div class="content">
+        <h4>Kebiasaan Positif Terlihat</h4>
+        <p id="insight-positive-text">Memuat data...</p>
+      </div>
+    </div>
+    <div class="insight-box opportunity">
+      <div class="icon">↗</div>
+      <div class="content">
+        <h4>Peluang Peningkatan</h4>
+        <p id="insight-opportunity-text">Memuat data...</p>
+      </div>
+    </div>
+    <div class="insight-box action">
+      <div class="icon">◎</div>
+      <div class="content">
+        <h4>Langkah Berikutnya</h4>
+        <p>Diskusikan temuan ini dengan siswa dan guru sebelum menentukan aksi yang sesuai konteks sekolah.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHARTS -->
+  <section class="charts-grid">
+    <!-- Gauge Chart -->
+    <div class="chart-container">
+      <h2>Skor Setiap Kategori 7 KAIH</h2>
+      <canvas id="gaugeChart"></canvas>
+    </div>
+
+    <!-- Radar Chart -->
+    <div class="chart-container">
+      <h2>Profil 7 KAIH (Radar)</h2>
+      <canvas id="radarChart"></canvas>
+    </div>
+
+    <!-- Bar Chart (Perbandingan Kelas) -->
+    <div class="chart-container">
+      <h2>Perbandingan Skor per Kelas</h2>
+      <canvas id="barChart"></canvas>
+    </div>
+
+    <!-- Line Chart (Tren Gelombang) -->
+    <div class="chart-container">
+      <h2>Tren Perkembangan (Gel 1 vs Gel 2)</h2>
+      <canvas id="lineChart"></canvas>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Dashboard VERTIKAL SMA 2026 &mdash; Dibuat dengan Chart.js &bull; Data Dummy untuk Demonstrasi</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
