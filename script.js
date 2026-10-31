@@ -224,7 +224,7 @@ function initCharts() {
         }
     });
 
-    // 3. Line Chart Tren Gelombang 1 s.d 4
+    // 3. Line Chart Tren Gelombang
     const ctxLine = document.getElementById('lineChartGelombang').getContext('2d');
     chartLineInstance = new Chart(ctxLine, {
         type: 'line',
@@ -308,7 +308,7 @@ function updateCharts(averages) {
     chartRadarInstance.data.datasets[0].data = averages;
     chartRadarInstance.update();
 
-    // Line Chart Gelombang data updates
+    // Line Chart Gelombang updates
     const w1Data = calculateAverages(rawDataset.filter(d => d.wave === 1));
     const w2Data = calculateAverages(rawDataset.filter(d => d.wave === 2));
     const w3Data = calculateAverages(rawDataset.filter(d => d.wave === 3));
