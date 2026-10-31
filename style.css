@@ -1,47 +1,31 @@
-/* Tailwind custom configuration script support (if inline Tailwind CDN is used) /
-<script>
-tailwind.config = {
-theme: {
-extend: {
-colors: {
-brand: {
-blue: '#1E3A8A',       / Royal/Navy Blue Utama (Betzata Blue) /
-sky: '#2563EB',        / Bright Accent Blue /
-darkblue: '#0F172A',   / Dark Slate Background /
-lightblue: '#EFF6FF',  / Soft Light Blue Background /
-yellow: '#EAB308',     / Vibrant Gold/Yellow Emas /
-amber: '#F59E0B',      / Darker Gold Accent /
-lightyellow: '#FEF9C3' / Kuning Soft */
-}
-},
-fontFamily: {
-sans: ['Inter', 'sans-serif'],
-heading: ['Poppins', 'sans-serif']
-}
-}
-}
-}
-</script>
-​/* Custom Styles */
+/* ==========================================
+   CUSTOM STYLES - SMA BETZATA LEILEM
+   ========================================== */
+
 body {
-background-color: #F8FAFC;
-color: #1E293B;
+    background-color: #F8FAFC;
+    color: #1E293B;
 }
-​.custom-scrollbar::-webkit-scrollbar {
-height: 6px;
-width: 6px;
+
+.custom-scrollbar::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
 }
-​.custom-scrollbar::-webkit-scrollbar-track {
-background: #f1f5f9;
-border-radius: 4px;
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
 }
-​.custom-scrollbar::-webkit-scrollbar-thumb {
-background: #cbd5e1;
-border-radius: 4px;
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
 }
-​.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-background: #94a3b8;
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }
-​.ai-glow {
-box-shadow: 0 0 25px -5px rgba(234, 179, 8, 0.25);
+
+.ai-glow {
+    box-shadow: 0 0 25px -5px rgba(234, 179, 8, 0.25);
 }
