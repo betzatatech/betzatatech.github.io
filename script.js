@@ -1,407 +1,495 @@
-// ==========================================
-// 1. MOCK DATASET SURVEI 7 KAIH
-// ==========================================
-const KAIH_NAMES = [
-    "Bangun Pagi",
-    "Beribadah",
-    "Berolahraga",
-    "Makan Sehat & Bergizi",
-    "Gemar Belajar",
-    "Bermasyarakat",
-    "Tidur Cepat"
+const HABITS = [
+  { key: "beribadah", label: "Beribadah", color: "#114094" },
+  { key: "bermasyarakat", label: "Bermasyarakat", color: "#1d4ed8" },
+  { key: "gemarBelajar", label: "Gemar belajar", color: "#2563eb" },
+  { key: "bangunPagi", label: "Bangun pagi", color: "#eab308" },
+  { key: "makanSehat", label: "Makan sehat/bergizi", color: "#0284c7" },
+  { key: "tidurCepat", label: "Tidur cepat", color: "#3b82f6" },
+  { key: "berolahraga", label: "Berolahraga", color: "#ca8a04" }
 ];
 
-const KAIH_DESCRIPTIONS = [
-    "Kedisiplinan memulai hari & kesiapan belajar",
-    "Mendekatkan diri kepada Tuhan YME",
-    "Kebugaran jasmani & aktivitas fisik 30 menit",
-    "Pola makan bergizi seimbang & membawa bekal",
-    "Semangat menuntut ilmu & aktif di kelas",
-    "Kepedulian sosial & semangat gotong royong",
-    "Cukup istirahat & mengurangi penggunaan gadget malam"
-];
+const RESPONDENTS = {
+  g1: 110,
+  g2: 111,
+  g3: 107,
+  g4: 106
+};
 
-function generateDummyData() {
-    const data = [];
-    const kelasList = ['X', 'XI', 'XII'];
-    const genderList = ['L', 'P'];
-    const gelombangList = [1, 2, 3, 4];
+const WAVE_DATA = {
+  all: {
+    id: "all",
+    label: "Gabungan Gelombang 1–4",
+    shortLabel: "Gabungan G1–G4",
+    respondentsText: "Total Responden: 434 (G1: 110 • G2: 111 • G3: 107 • G4: 106)",
+    subtext: "Menampilkan persentase capaian berdasarkan data Gabungan Gelombang 1–4 (total 434 responden).",
+    values: {
+      beribadah: 86.97,
+      bermasyarakat: 83.75,
+      gemarBelajar: 73.36,
+      bangunPagi: 72.94,
+      makanSehat: 72.90,
+      tidurCepat: 72.47,
+      berolahraga: 71.03
+    },
+    needsVerificationKey: null,
+    findings: [
+      "Persentase tertinggi pada Gabungan Gelombang 1–4 adalah Beribadah sebesar 86,97%, diikuti Bermasyarakat sebesar 83,75%.",
+      "Lima kebiasaan lainnya berada pada rentang 71,03% hingga 73,36%: Gemar belajar (73,36%), Bangun pagi (72,94%), Makan sehat/bergizi (72,90%), Tidur cepat (72,47%), dan Berolahraga (71,03%).",
+      "Berolahraga mencatat persentase gabungan terendah (71,03%), sementara pada Gelombang 3 terdapat catatan khusus pada Bangun pagi (50,28% nilai literal vs 81,43% pada catatan koreksi label) yang perlu diverifikasi."
+    ],
+    recommendations: [
+      "Prioritaskan penguatan kebiasaan Berolahraga (71,03%), Tidur cepat (72,47%), dan Makan sehat/bergizi (72,90%) melalui aktivitas fisik singkat di sekolah, edukasi gizi seimbang, serta pengaturan jam istirahat malam.",
+      "Lakukan verifikasi label respons untuk Bangun pagi pada Gelombang 3 sebelum menjadikan tren lintas-gelombang sebagai dasar kesimpulan tunggal."
+    ]
+  },
+  g1: {
+    id: "g1",
+    label: "Gelombang 1",
+    shortLabel: "Gelombang 1 (110 Responden)",
+    respondentsText: "Gelombang 1: 110 Responden (Total G1–G4: 434)",
+    subtext: "Menampilkan persentase capaian pada Gelombang 1 (110 responden).",
+    values: {
+      beribadah: 87.94,
+      bermasyarakat: 84.12,
+      bangunPagi: 79.82,
+      gemarBelajar: 72.85,
+      makanSehat: 72.61,
+      berolahraga: 71.88,
+      tidurCepat: 71.58
+    },
+    needsVerificationKey: null,
+    findings: [
+      "Persentase tertinggi pada Gelombang 1 adalah Beribadah (87,94%).",
+      "Persentase terendah pada Gelombang 1 adalah Tidur cepat (71,58%).",
+      "Beribadah (87,94%) dan Bermasyarakat (84,12%) berada di posisi teratas, disusul Bangun pagi (79,82%).",
+      "Empat kebiasaan lainnya berada di kisaran 71%–72%: Gemar belajar (72,85%), Makan sehat/bergizi (72,61%), Berolahraga (71,88%), dan Tidur cepat (71,58%)."
+    ],
+    recommendations: [
+      "Tidur cepat (71,58%): Wali kelas dan guru BK dapat mengadakan sesi berbagi ringan bersama siswa dan orang tua tentang jadwal istirahat malam yang realistis.",
+      "Berolahraga (71,88%) dan Makan sehat/bergizi (72,61%): Sekolah dapat mengenalkan aktivitas fisik sederhana di luar jam olahraga formal serta mendorong siswa membawa air minum dan bekal sehat."
+    ]
+  },
+  g2: {
+    id: "g2",
+    label: "Gelombang 2",
+    shortLabel: "Gelombang 2 (111 Responden)",
+    respondentsText: "Gelombang 2: 111 Responden (Total G1–G4: 434)",
+    subtext: "Menampilkan persentase capaian pada Gelombang 2 (111 responden).",
+    values: {
+      beribadah: 87.75,
+      bermasyarakat: 84.44,
+      bangunPagi: 80.30,
+      gemarBelajar: 74.17,
+      tidurCepat: 72.91,
+      makanSehat: 72.79,
+      berolahraga: 71.35
+    },
+    needsVerificationKey: null,
+    findings: [
+      "Persentase tertinggi pada Gelombang 2 adalah Beribadah (87,75%).",
+      "Persentase terendah pada Gelombang 2 adalah Berolahraga (71,35%).",
+      "Beribadah (87,75%), Bermasyarakat (84,44%), dan Bangun pagi (80,30%) menempati tiga posisi teratas.",
+      "Gemar belajar (74,17%) dan Tidur cepat (72,91%) pada Gelombang 2 lebih tinggi daripada Gelombang 1, yang masing-masing tercatat sebesar 72,85% dan 71,58%."
+    ],
+    recommendations: [
+      "Berolahraga (71,35%): Guru dapat mengadakan peregangan atau permainan aktif singkat saat pergantian sesi pembelajaran.",
+      "Makan sehat/bergizi (72,79%): Sekolah dapat mengadakan edukasi gizi seimbang yang terjangkau dan mudah diterapkan, termasuk mengurangi minuman berpemanis secara bertahap."
+    ]
+  },
+  g3: {
+    id: "g3",
+    label: "Gelombang 3",
+    shortLabel: "Gelombang 3 (107 Responden)",
+    respondentsText: "Gelombang 3: 107 Responden (Total G1–G4: 434)",
+    subtext: "Menampilkan persentase capaian pada Gelombang 3 (107 responden). Bangun pagi ditandai perlu diverifikasi.",
+    values: {
+      beribadah: 86.60,
+      bermasyarakat: 83.61,
+      gemarBelajar: 73.46,
+      makanSehat: 72.52,
+      tidurCepat: 72.27,
+      berolahraga: 69.97,
+      bangunPagi: 50.28
+    },
+    needsVerificationKey: "bangunPagi",
+    verificationNote: "Nilai literal: 50,28% | Catatan koreksi label: 81,43% (Perlu Diverifikasi)",
+    findings: [
+      "Berdasarkan data literal Gelombang 3, persentase tertinggi adalah Beribadah (86,60%), sedangkan Bangun pagi tercatat paling rendah (50,28%).",
+      "Terdapat catatan koreksi label yang menyebut nilai Bangun pagi sebesar 81,43%. Angka 50,28% tetap ditampilkan sebagai nilai literal tanpa diganti diam-diam.",
+      "Data Bangun pagi pada Gelombang 3 berstatus perlu diverifikasi—nilai 50,28% adalah angka literal, sedangkan 81,43% adalah nilai pada catatan koreksi label, sehingga kesimpulan tunggal mengenai Bangun pagi belum dibuat sebelum verifikasi."
+    ],
+    recommendations: [
+      "Bangun pagi (50,28% literal / 81,43% catatan koreksi label): Tim pelaksana survei sekolah sebaiknya memverifikasi label respons, dan sekolah juga dapat membantu siswa serta keluarga menyusun rutinitas pagi yang nyaman.",
+      "Berolahraga (69,97%): Sekolah dapat mendorong gerak ringan bersama atau kegiatan ekstrakurikuler yang inklusif bagi berbagai tingkat kebugaran."
+    ]
+  },
+  g4: {
+    id: "g4",
+    label: "Gelombang 4",
+    shortLabel: "Gelombang 4 (106 Responden)",
+    respondentsText: "Gelombang 4: 106 Responden (Total G1–G4: 434)",
+    subtext: "Menampilkan persentase capaian pada Gelombang 4 (106 responden).",
+    values: {
+      beribadah: 85.53,
+      bermasyarakat: 82.77,
+      bangunPagi: 81.01,
+      makanSehat: 73.71,
+      tidurCepat: 73.14,
+      gemarBelajar: 72.96,
+      berolahraga: 70.88
+    },
+    needsVerificationKey: null,
+    findings: [
+      "Persentase tertinggi pada Gelombang 4 adalah Beribadah (85,53%).",
+      "Persentase terendah pada Gelombang 4 adalah Berolahraga (70,88%).",
+      "Beribadah (85,53%), Bermasyarakat (82,77%), dan Bangun pagi (81,01%) berada di atas 80%.",
+      "Bangun pagi pada Gelombang 4 (81,01%) lebih tinggi daripada Gelombang 1 (79,82%) dan Gelombang 2 (80,30%)."
+    ],
+    recommendations: [
+      "Berolahraga (70,88%): Sekolah dapat menyediakan aktivitas fisik yang menyenangkan, seperti klub olahraga rekreasional, jalan santai, atau tantangan gerak mingguan.",
+      "Gemar belajar (72,96%) dan Tidur cepat (73,14%): Guru dapat membantu siswa menyeimbangkan jadwal belajar dan istirahat, terutama menjelang akhir semester."
+    ]
+  }
+};
 
-    let id = 1;
-    for (let i = 0; i < 184; i++) {
-        const k = kelasList[i % 3];
-        const g = genderList[i % 2];
-        const gel = gelombangList[i % 4];
-
-        const waveBonus = (gel - 1) * 0.2;
-        let scores = [
-            3.8 + waveBonus + (Math.random() * 0.8 - 0.4),
-            4.3 + waveBonus * 0.5 + (Math.random() * 0.6 - 0.3),
-            3.4 + waveBonus + (Math.random() * 0.9 - 0.45),
-            3.5 + waveBonus + (Math.random() * 0.9 - 0.45),
-            3.6 + waveBonus + (Math.random() * 0.8 - 0.4),
-            4.1 + waveBonus * 0.5 + (Math.random() * 0.6 - 0.3),
-            2.8 + waveBonus * 1.1 + (Math.random() * 1.0 - 0.5)
-        ];
-
-        scores = scores.map(s => Math.min(5, Math.max(1, parseFloat(s.toFixed(2)))));
-
-        data.push({
-            id: id++,
-            kelas: k,
-            gender: g,
-            wave: gel,
-            scores: scores
-        });
-    }
-    return data;
+function formatIdPercent(num) {
+  return num.toFixed(2).replace(".", ",") + "%";
 }
 
-const rawDataset = generateDummyData();
-let filteredDataset = [...rawDataset];
-
-let chartBarInstance = null;
-let chartRadarInstance = null;
-let chartLineInstance = null;
-let chartClassCompInstance = null;
-let chartGenderInstance = null;
-let chartClassDistInstance = null;
-
-// ==========================================
-// 2. LOGIC FILTER & KALKULASI DATA
-// ==========================================
-function applyFilters() {
-    const filterKelas = document.getElementById('filterKelas').value;
-    const filterGender = document.getElementById('filterGender').value;
-    const filterGelombang = document.getElementById('filterGelombang').value;
-
-    filteredDataset = rawDataset.filter(item => {
-        const matchKelas = (filterKelas === 'ALL') || (item.kelas === filterKelas);
-        const matchGender = (filterGender === 'ALL') || (item.gender === filterGender);
-        const matchGelombang = (filterGelombang === 'ALL') || (item.wave == filterGelombang);
-        return matchKelas && matchGender && matchGelombang;
-    });
-
-    updateDashboardUI();
+function getSortedHabitsForWave(waveObj) {
+  return [...HABITS].sort((a, b) => waveObj.values[b.key] - waveObj.values[a.key]);
 }
 
-function resetFilters() {
-    document.getElementById('filterKelas').value = 'ALL';
-    document.getElementById('filterGender').value = 'ALL';
-    document.getElementById('filterGelombang').value = 'ALL';
-    applyFilters();
+let barChartInstance = null;
+let doughnutChartInstance = null;
+let radarChartInstance = null;
+let lineTrendChartInstance = null;
+
+function renderRespondentStrip(activeWaveId) {
+  document.querySelectorAll(".resp-card").forEach((card) => {
+    const waveKey = card.getAttribute("data-resp-wave");
+    card.classList.toggle("is-highlighted", activeWaveId === waveKey);
+  });
+
+  const chip = document.getElementById("activeRespondentChip");
+  if (chip) {
+    chip.textContent = WAVE_DATA[activeWaveId].respondentsText;
+  }
 }
 
-function calculateAverages(dataset) {
-    if (!dataset || dataset.length === 0) return [0, 0, 0, 0, 0, 0, 0];
-    const sums = [0, 0, 0, 0, 0, 0, 0];
-    dataset.forEach(item => {
-        item.scores.forEach((sc, idx) => {
-            sums[idx] += sc;
-        });
-    });
-    return sums.map(sum => parseFloat((sum / dataset.length).toFixed(2)));
+function renderHabitCards(waveObj) {
+  const grid = document.getElementById("habitsGrid");
+  const subtext = document.getElementById("indicatorSubtext");
+  if (!grid || !subtext) return;
+
+  subtext.textContent = waveObj.subtext;
+  const sortedHabits = getSortedHabitsForWave(waveObj);
+
+  grid.innerHTML = sortedHabits
+    .map((habit) => {
+      const val = waveObj.values[habit.key];
+      const isVerify = waveObj.needsVerificationKey === habit.key;
+      const pctWidth = Math.max(0, Math.min(100, val));
+
+      return `
+        <article class="habit-card ${isVerify ? "habit-card--verify" : ""}">
+          <div class="habit-top">
+            <h3 class="habit-name">${habit.label}</h3>
+            <span class="habit-value">${formatIdPercent(val)}</span>
+          </div>
+          ${
+            isVerify
+              ? `<span class="verify-badge">Perlu Diverifikasi</span>
+                 <p class="verify-note">${waveObj.verificationNote}</p>`
+              : ""
+          }
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill" style="width: ${pctWidth}%;"></div>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
 }
 
-// ==========================================
-// 3. UPDATE TAMPILAN DASHBOARD & CHARTS
-// ==========================================
-function updateDashboardUI() {
-    const averages = calculateAverages(filteredDataset);
-    const totalResponden = filteredDataset.length;
+function renderInsight(waveObj) {
+  const titleEl = document.getElementById("insightTitle");
+  const pillEl = document.getElementById("insightScopePill");
+  const bannerEl = document.getElementById("verificationAlert");
+  const findingsEl = document.getElementById("insightFindings");
+  const recsEl = document.getElementById("insightRecommendations");
 
-    updateKPICards(totalResponden, averages);
-    updateCharts(averages);
-    updateGeminiInsight(filteredDataset, averages, totalResponden);
-    renderDetailedKaihList(averages);
+  if (!titleEl || !pillEl || !bannerEl || !findingsEl || !recsEl) return;
+
+  titleEl.textContent = `Ringkasan & Rekomendasi — ${waveObj.label}`;
+  pillEl.textContent = `Fokus: ${waveObj.shortLabel}`;
+
+  bannerEl.classList.toggle("hidden", waveObj.id !== "g3");
+
+  findingsEl.innerHTML = waveObj.findings.map((item) => `<li>${item}</li>`).join("");
+  recsEl.innerHTML = waveObj.recommendations.map((item) => `<li>${item}</li>`).join("");
 }
 
-function updateKPICards(totalResponden, averages) {
-    document.getElementById('kpiTotalResponden').innerText = totalResponden;
+function buildCharts(waveObj) {
+  if (typeof Chart === "undefined") return;
 
-    const overallAvg = averages.length > 0 && totalResponden > 0
-        ? (averages.reduce((a, b) => a + b, 0) / averages.length).toFixed(2)
-        : 0.00;
-    
-    document.getElementById('kpiSkorRataRata').innerText = overallAvg;
+  const sortedHabits = getSortedHabitsForWave(waveObj);
+  const labels = sortedHabits.map((h) => h.label);
+  const dataVals = sortedHabits.map((h) => waveObj.values[h.key]);
 
-    const kpiPredikat = document.getElementById('kpiPredikat');
-    if (overallAvg >= 4.0) {
-        kpiPredikat.innerText = "SANGAT BAIK";
-        kpiPredikat.className = "font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded";
-    } else if (overallAvg >= 3.2) {
-        kpiPredikat.innerText = "BAIK";
-        kpiPredikat.className = "font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded";
-    } else {
-        kpiPredikat.innerText = "PERLU DITINGKATKAN";
-        kpiPredikat.className = "font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded";
-    }
+  const barColors = sortedHabits.map((h) =>
+    waveObj.needsVerificationKey === h.key ? "#eab308" : "#114094"
+  );
+  const barBorders = sortedHabits.map((h) =>
+    waveObj.needsVerificationKey === h.key ? "#854d0e" : "#0b2d6b"
+  );
 
-    if (totalResponden > 0) {
-        let maxIdx = 0, minIdx = 0;
-        averages.forEach((val, idx) => {
-            if (val > averages[maxIdx]) maxIdx = idx;
-            if (val < averages[minIdx]) minIdx = idx;
-        });
+  document.getElementById("barChartTitle").textContent = `Peringkat Persentase — ${waveObj.label}`;
+  document.getElementById("barChartSub").textContent = `Urutan dari tertinggi ke terendah (${waveObj.shortLabel})`;
 
-        document.getElementById('kpiTopName').innerText = KAIH_NAMES[maxIdx];
-        document.getElementById('kpiTopScore').innerText = averages[maxIdx].toFixed(2);
-        document.getElementById('kpiLowName').innerText = KAIH_NAMES[minIdx];
-        document.getElementById('kpiLowScore').innerText = averages[minIdx].toFixed(2);
-    } else {
-        document.getElementById('kpiTopName').innerText = "-";
-        document.getElementById('kpiTopScore').innerText = "0.00";
-        document.getElementById('kpiLowName').innerText = "-";
-        document.getElementById('kpiLowScore').innerText = "0.00";
-    }
-
-    const targetPct = ((overallAvg / 5.0) * 100).toFixed(1);
-    document.getElementById('kpiTargetPct').innerText = `${targetPct}%`;
-    document.getElementById('kpiProgressBar').style.width = `${targetPct}%`;
-}
-
-// ==========================================
-// 4. INITIALIZE & UPDATE CHARTS (CHART.JS)
-// ==========================================
-function initCharts() {
-    const ctxBar = document.getElementById('barChart7KAIH').getContext('2d');
-    chartBarInstance = new Chart(ctxBar, {
-        type: 'bar',
-        data: {
-            labels: KAIH_NAMES,
-            datasets: [{
-                label: 'Skor Rata-Rata',
-                data: [0,0,0,0,0,0,0],
-                backgroundColor: '#2563EB',
-                borderRadius: 4,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { min: 1.0, max: 5.0, ticks: { stepSize: 1.0 } },
-                x: { ticks: { font: { size: 10, weight: 'bold' } } }
+  if (barChartInstance) barChartInstance.destroy();
+  barChartInstance = new Chart(document.getElementById("barChart"), {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Persentase (%)",
+          data: dataVals,
+          backgroundColor: barColors,
+          borderColor: barBorders,
+          borderWidth: 1.5,
+          borderRadius: 6
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: {
+            callback: (v) => v + "%"
+          }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const habitKey = sortedHabits[ctx.dataIndex].key;
+              const baseText = `${ctx.dataset.label}: ${formatIdPercent(ctx.parsed.y)}`;
+              if (waveObj.needsVerificationKey === habitKey) {
+                return [baseText, "Status: Perlu Diverifikasi (Catatan koreksi label: 81,43%)"];
+              }
+              return baseText;
             }
+          }
         }
-    });
-
-    const ctxRadar = document.getElementById('radarChart7KAIH').getContext('2d');
-    chartRadarInstance = new Chart(ctxRadar, {
-        type: 'radar',
-        data: {
-            labels: KAIH_NAMES,
-            datasets: [{
-                label: 'Profil Karakter',
-                data: [0,0,0,0,0,0,0],
-                backgroundColor: 'rgba(37, 99, 235, 0.15)',
-                borderColor: '#2563EB',
-                pointBackgroundColor: '#EAB308',
-                pointBorderColor: '#fff',
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: { r: { min: 1, max: 5, ticks: { display: false } } },
-            plugins: { legend: { display: false } }
-        }
-    });
-
-    const ctxLine = document.getElementById('lineChartGelombang').getContext('2d');
-    chartLineInstance = new Chart(ctxLine, {
-        type: 'line',
-        data: {
-            labels: KAIH_NAMES,
-            datasets: [
-                { label: 'Gelombang 1', data: [0,0,0,0,0,0,0], borderColor: '#2563EB', borderWidth: 2, tension: 0.3, pointRadius: 3 },
-                { label: 'Gelombang 2', data: [0,0,0,0,0,0,0], borderColor: '#EAB308', borderWidth: 2, tension: 0.3, pointRadius: 3 },
-                { label: 'Gelombang 3', data: [0,0,0,0,0,0,0], borderColor: '#06B6D4', borderWidth: 2, tension: 0.3, pointRadius: 3 },
-                { label: 'Gelombang 4', data: [0,0,0,0,0,0,0], borderColor: '#F97316', borderWidth: 2, tension: 0.3, pointRadius: 3 }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11, weight: 'bold' } } } },
-            scales: { y: { min: 1.0, max: 5.0 } }
-        }
-    });
-
-    const ctxClassComp = document.getElementById('chartClassComparison').getContext('2d');
-    chartClassCompInstance = new Chart(ctxClassComp, {
-        type: 'bar',
-        data: {
-            labels: ['Bangun Pagi', 'Beribadah', 'Olahraga', 'Makan Sehat', 'Belajar', 'Bermasyarakat', 'Tidur Cepat'],
-            datasets: [
-                { label: 'Kelas X', data: [0,0,0,0,0,0,0], backgroundColor: '#1E3A8A' },
-                { label: 'Kelas XI', data: [0,0,0,0,0,0,0], backgroundColor: '#2563EB' },
-                { label: 'Kelas XII', data: [0,0,0,0,0,0,0], backgroundColor: '#EAB308' }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: { y: { min: 0, max: 5 } },
-            plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } }
-        }
-    });
-
-    const ctxGender = document.getElementById('chartGenderDist').getContext('2d');
-    chartGenderInstance = new Chart(ctxGender, {
-        type: 'doughnut',
-        data: {
-            labels: ['Laki-Laki', 'Perempuan'],
-            datasets: [{ data: [0, 0], backgroundColor: ['#1E3A8A', '#EAB308'] }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 10 } } }, title: { display: true, text: 'Gender', font: { size: 11 } } }
-        }
-    });
-
-    const ctxClassDist = document.getElementById('chartClassDist').getContext('2d');
-    chartClassDistInstance = new Chart(ctxClassDist, {
-        type: 'doughnut',
-        data: {
-            labels: ['Kelas X', 'Kelas XI', 'Kelas XII'],
-            datasets: [{ data: [0, 0, 0], backgroundColor: ['#1E3A8A', '#2563EB', '#F59E0B'] }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 10 } } }, title: { display: true, text: 'Tingkat Kelas', font: { size: 11 } } }
-        }
-    });
-}
-
-function updateCharts(averages) {
-    if (!chartBarInstance || !chartRadarInstance) return;
-
-    let minVal = Math.min(...averages);
-    const barColors = averages.map(val => val === minVal ? '#EAB308' : '#2563EB');
-
-    chartBarInstance.data.datasets[0].data = averages;
-    chartBarInstance.data.datasets[0].backgroundColor = barColors;
-    chartBarInstance.update();
-
-    chartRadarInstance.data.datasets[0].data = averages;
-    chartRadarInstance.update();
-
-    chartLineInstance.data.datasets[0].data = calculateAverages(rawDataset.filter(d => d.wave === 1));
-    chartLineInstance.data.datasets[1].data = calculateAverages(rawDataset.filter(d => d.wave === 2));
-    chartLineInstance.data.datasets[2].data = calculateAverages(rawDataset.filter(d => d.wave === 3));
-    chartLineInstance.data.datasets[3].data = calculateAverages(rawDataset.filter(d => d.wave === 4));
-    chartLineInstance.update();
-
-    chartClassCompInstance.data.datasets[0].data = calculateAverages(rawDataset.filter(d => d.kelas === 'X'));
-    chartClassCompInstance.data.datasets[1].data = calculateAverages(rawDataset.filter(d => d.kelas === 'XI'));
-    chartClassCompInstance.data.datasets[2].data = calculateAverages(rawDataset.filter(d => d.kelas === 'XII'));
-    chartClassCompInstance.update();
-
-    const countL = filteredDataset.filter(d => d.gender === 'L').length;
-    const countP = filteredDataset.filter(d => d.gender === 'P').length;
-    chartGenderInstance.data.datasets[0].data = [countL, countP];
-    chartGenderInstance.update();
-
-    const cX = filteredDataset.filter(d => d.kelas === 'X').length;
-    const cXI = filteredDataset.filter(d => d.kelas === 'XI').length;
-    const cXII = filteredDataset.filter(d => d.kelas === 'XII').length;
-    chartClassDistInstance.data.datasets[0].data = [cX, cXI, cXII];
-    chartClassDistInstance.update();
-}
-
-// ==========================================
-// 5. GEMINI AI INSIGHT GENERATOR
-// ==========================================
-function updateGeminiInsight(filtered, averages, count) {
-    if (count === 0) {
-        document.getElementById('aiKeyFindings').innerText = "Tidak ada data yang sesuai.";
-        document.getElementById('aiTrends').innerText = "Silakan ubah filter segmentasi.";
-        document.getElementById('aiRecommendations').innerText = "Tidak ada rekomendasi.";
-        return;
+      }
     }
+  });
 
-    let minIdx = 0, maxIdx = 0;
-    averages.forEach((val, i) => {
-        if (val < averages[minIdx]) minIdx = i;
-        if (val > averages[maxIdx]) maxIdx = i;
-    });
+  document.getElementById("doughnutChartTitle").textContent = `Proporsi Relatif — ${waveObj.label}`;
+  document.getElementById("doughnutChartSub").textContent = `Porsi relatif nilai persentase 7 kebiasaan (${waveObj.shortLabel})`;
 
-    const topHabit = KAIH_NAMES[maxIdx];
-    const lowHabit = KAIH_NAMES[minIdx];
+  const palette = ["#0b2d6b", "#1756c2", "#2563eb", "#0284c7", "#38bdf8", "#facc15", "#eab308"];
+  if (doughnutChartInstance) doughnutChartInstance.destroy();
+  doughnutChartInstance = new Chart(document.getElementById("doughnutChart"), {
+    type: "doughnut",
+    data: {
+      labels,
+      datasets: [
+        {
+          data: dataVals,
+          backgroundColor: palette,
+          borderColor: "#ffffff",
+          borderWidth: 2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "58%",
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: { boxWidth: 12, font: { size: 11 } }
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `${ctx.label}: ${formatIdPercent(ctx.parsed)}`
+          }
+        }
+      }
+    }
+  });
 
-    document.getElementById('aiKeyFindings').innerHTML = `Dari <strong>${count} responden</strong> siswa SMA Betzata Leilem, indikator <strong>${topHabit}</strong> menunjukkan capaian tertinggi (<strong>${averages[maxIdx]}</strong>). Sebaliknya, <strong>${lowHabit}</strong> memerlukan perhatian khusus (<strong>${averages[minIdx]}</strong>).`;
-    document.getElementById('aiTrends').innerHTML = `Analisis multivariat menunjukkan korelasi erat antara kedisiplinan istirahat malam dengan tingkat kebugaran dan fokus belajar siswa di kelas pada jam pagi.`;
-    document.getElementById('aiRecommendations').innerHTML = `Disarankan pelaksanaan program intervensi <em>"Digital Detox Challenge"</em> pukul 21.00 dan senam kebugaran rutin 15 menit.`;
-}
+  document.getElementById("radarChartTitle").textContent = `Profil 7 Kebiasaan — ${waveObj.label}`;
+  document.getElementById("radarChartSub").textContent = `Pola capaian seluruh kebiasaan (${waveObj.shortLabel})`;
 
-// ==========================================
-// 6. RENDER KARTU DETAIL EVALUASI 7 KAIH
-// ==========================================
-function renderDetailedKaihList(averages) {
-    const container = document.getElementById('detailedKaihList');
-    container.innerHTML = '';
+  const radarLabels = HABITS.map((h) => h.label);
+  const radarValues = HABITS.map((h) => waveObj.values[h.key]);
 
-    const icons = [
-        'fa-sun text-amber-500',
-        'fa-hands-praying text-blue-600',
-        'fa-person-running text-green-600',
-        'fa-apple-whole text-red-500',
-        'fa-book-open text-purple-600',
-        'fa-handshake text-teal-600',
-        'fa-bed text-indigo-600'
+  if (radarChartInstance) radarChartInstance.destroy();
+  radarChartInstance = new Chart(document.getElementById("radarChart"), {
+    type: "radar",
+    data: {
+      labels: radarLabels,
+      datasets: [
+        {
+          label: waveObj.label,
+          data: radarValues,
+          fill: true,
+          backgroundColor: "rgba(23, 86, 194, 0.18)",
+          borderColor: "#114094",
+          pointBackgroundColor: "#eab308",
+          pointBorderColor: "#0b2d6b",
+          pointRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          min: 40,
+          max: 100,
+          ticks: {
+            stepSize: 15,
+            callback: (v) => v + "%"
+          }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `${ctx.label}: ${formatIdPercent(ctx.parsed.r)}`
+          }
+        }
+      }
+    }
+  });
+
+  if (!lineTrendChartInstance) {
+    const waveKeys = ["g1", "g2", "g3", "g4"];
+    const waveLabels = [
+      `Gelombang 1 (n=${RESPONDENTS.g1})`,
+      `Gelombang 2 (n=${RESPONDENTS.g2})`,
+      `Gelombang 3 (n=${RESPONDENTS.g3})`,
+      `Gelombang 4 (n=${RESPONDENTS.g4})`
     ];
 
-    KAIH_NAMES.forEach((name, idx) => {
-        const score = averages[idx];
-        let statusBadge = '';
-        let borderClass = 'border-slate-200';
+    const lineColors = [
+      "#0b2d6b",
+      "#1d4ed8",
+      "#0284c7",
+      "#eab308",
+      "#0ea5e9",
+      "#6366f1",
+      "#ca8a04"
+    ];
 
-        if (score >= 4.0) {
-            statusBadge = `<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">Sangat Baik</span>`;
-            borderClass = 'border-emerald-200';
-        } else if (score >= 3.2) {
-            statusBadge = `<span class="text-[10px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">Baik</span>`;
-            borderClass = 'border-blue-200';
-        } else {
-            statusBadge = `<span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">Perlu Ditingkatkan</span>`;
-            borderClass = 'border-amber-300 bg-amber-50/20';
-        }
+    const datasets = HABITS.map((habit, idx) => {
+      const series = waveKeys.map((wk) => WAVE_DATA[wk].values[habit.key]);
+      const pointBg = waveKeys.map((wk) =>
+        wk === "g3" && habit.key === "bangunPagi" ? "#facc15" : lineColors[idx]
+      );
+      const pointRadius = waveKeys.map((wk) =>
+        wk === "g3" && habit.key === "bangunPagi" ? 7 : 4
+      );
+      const pointBorder = waveKeys.map((wk) =>
+        wk === "g3" && habit.key === "bangunPagi" ? "#854d0e" : "#ffffff"
+      );
 
-        const cardHtml = `
-            <div class="bg-white border ${borderClass} rounded-xl p-3 flex flex-col justify-between">
-                <div class="flex items-start justify-between gap-2">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-sm shrink-0">
-                            <i class="fa-solid ${icons[idx]}"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-xs text-slate-900">${idx+1}. ${name}</h4>
-                            <p class="text-[10px] text-slate-500 line-clamp-1">${KAIH_DESCRIPTIONS[idx]}</p>
-                        </div>
-                    </div>
-                    <div class="text-right shrink-0">
-                        <span class="font-heading font-extrabold text-sm text-slate-900">${score.toFixed(2)}</span>
-                        <span class="text-[9px] text-slate-400 block">/ 5.00</span>
-                    </div>
-                </div>
-                <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between">
-                    <span class="text-[10px] text-slate-400">Status:</span>
-                    <div>${statusBadge}</div>
-                </div>
-            </div>
-        `;
-        container.innerHTML += cardHtml;
+      return {
+        label: habit.label,
+        data: series,
+        borderColor: lineColors[idx],
+        backgroundColor: lineColors[idx],
+        borderWidth: habit.key === "bangunPagi" ? 2.6 : 2,
+        tension: 0.25,
+        pointBackgroundColor: pointBg,
+        pointBorderColor: pointBorder,
+        pointBorderWidth: 2,
+        pointRadius
+      };
     });
+
+    lineTrendChartInstance = new Chart(document.getElementById("lineTrendChart"), {
+      type: "line",
+      data: {
+        labels: waveLabels,
+        datasets
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: "index",
+          intersect: false
+        },
+        scales: {
+          y: {
+            min: 45,
+            max: 95,
+            ticks: {
+              callback: (v) => v + "%"
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: {
+              usePointStyle: true,
+              boxWidth: 10,
+              font: { size: 11.5 }
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const isG3Bangun = ctx.dataIndex === 2 && ctx.dataset.label === "Bangun pagi";
+                const base = `${ctx.dataset.label}: ${formatIdPercent(ctx.parsed.y)}`;
+                return isG3Bangun
+                  ? `${base} [Perlu Diverifikasi: nilai literal 50,28% | koreksi label 81,43%]`
+                  : base;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
 }
 
-// ==========================================
-// 7. INITIALIZATION
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    initCharts();
-    applyFilters();
+function applyWaveFilter(waveId) {
+  const waveObj = WAVE_DATA[waveId] || WAVE_DATA.all;
+
+  document.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.classList.toggle("active", btn.getAttribute("data-wave") === waveObj.id);
+  });
+
+  renderRespondentStrip(waveObj.id);
+  renderHabitCards(waveObj);
+  renderInsight(waveObj);
+  buildCharts(waveObj);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const selectedWave = btn.getAttribute("data-wave");
+      applyWaveFilter(selectedWave);
+    });
+  });
+
+  applyWaveFilter("all");
 });
