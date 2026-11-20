@@ -20,7 +20,7 @@ const WAVE_DATA = {
     id: "all",
     label: "Gabungan Gelombang 1–4",
     shortLabel: "Gabungan G1–G4",
-    respondentsText: "Total Responden: 434 (G1: 110 • G2: 111 • G3: 107 • G4: 106)",
+    respondentsText: "Total Responden: 434",
     subtext: "Menampilkan persentase capaian berdasarkan data Gabungan Gelombang 1–4 (total 434 responden).",
     values: {
       beribadah: 86.97,
