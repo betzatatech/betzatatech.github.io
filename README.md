@@ -8,7 +8,7 @@ Dashboard interaktif berbasis web untuk memantau, menganalisis, dan mengevaluasi
 
 ## 🚀 Fitur Utama
 
-- **🔍 Filter Segmentasi Dinamis:** Memfilter data survei secara langsung berdasarkan Tingkat Kelas (X, XI, XII), Jenis Kelamin (L/P), dan Gelombang Survei (1 s.d 4).
+- **🔍 Filter:** Memfilter data survei secara langsung berdasarkan Gelombang Survei (1 s.d 4).
 - **📈 Visualisasi Grafik Komprehensif (Chart.js):**
   - **Bar Chart:** Perbandingan rata-rata skor per indikator kebiasaan.
   - **Radar Chart:** Pemetaan keseimbangan profil karakter siswa.
@@ -45,8 +45,8 @@ Proyek ini dikerjakan secara kolaboratif oleh Tim Pelaksana SMA Betzata Leilem:
 - **Kimberly Lengkey** (Kelas X-B) — *Presentation Lead*
 
 ### 👩‍🏫 Guru Pembimbing
-- **Ms. Mawar Pua** — *Guru Substansi 7 KAIH (Guru Fisika & IT)*
-- **Mr. Allan Posumah** — *Guru Pendamping AI (Guru IT & KKA)*
+- **Mr. Allan Posumah S.Pd** — *Guru Substansi 7 KAIH*
+- **Ms. Mawar Sharon Pua S.T** — *Guru Pendamping AI*
 
 ---
 
@@ -54,7 +54,6 @@ Proyek ini dikerjakan secara kolaboratif oleh Tim Pelaksana SMA Betzata Leilem:
 
 Proyek ini dibangun menggunakan teknologi web standar tanpa memerlukan *build tool* yang rumit:
 - **HTML5 & CSS3** (Struktur & Styling)
-- **Tailwind CSS (CDN)** (Utility-first CSS Framework)
 - **JavaScript (ES6+)** (Logika, manipulasi data, & reaktivitas filter)
 - **Chart.js** (grafik interaktif)
 - **FontAwesome** (Ikon antarmuka)
