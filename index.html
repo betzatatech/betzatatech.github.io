@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard 7KAIH — SMA Betzata Leilem (VERTIKAL SMA)</title>
+  <title>Dashboard 7KAIH — SMA Betzata Leilem VERTIKAL SMA 2026</title>
   <link rel="icon" type="image/png" href="image/logobetzata.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,14 +24,25 @@
             <h1>Dashboard 7 Kebiasaan Anak Indonesia Hebat</h1>
           </div>
         </div>
-        <div class="header-meta">
-          <span class="meta-chip" id="activeRespondentChip">Total Responden: 434</span>
-        </div>
       </div>
     </header>
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
+      <!-- ACHIEVEMENT INSIGHT CARDS (BEFORE WAVE FILTER) -->
+      <section class="section-block achievement-section" aria-labelledby="heading-achievement-insights">
+        <div class="section-head achievement-head">
+          <div>
+            <span class="achievement-eyebrow">Sorotan Capaian &amp; Penghargaan Kebiasaan</span>
+            <h2 id="heading-achievement-insights">Insight Capaian Utama 7KAIH</h2>
+            <p class="section-sub" id="achievementSubtext">Ringkasan penghargaan capaian tertinggi, konsistensi, serta area prioritas berdasarkan data Gelombang 1–4.</p>
+          </div>
+          <span class="achievement-wave-pill" id="achievementWaveBadge">Gabungan Gelombang 1–4</span>
+        </div>
+
+        <div class="achievement-grid" id="achievementGrid" aria-live="polite"></div>
+      </section>
+
       <!-- FILTER BAR & WAVE RESPONDENT SUMMARY -->
       <section class="control-panel" aria-label="Filter Gelombang dan Ringkasan Responden">
         <div class="filter-bar">
@@ -199,10 +210,44 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>SMA Betzata Leilem - Data 7KAIH Gelombang 1–4</span>
-        <span><a href="http://betzata-abd.org"></a>http://betzata-abd.org</span>
+        <span>SMA Betzata Leilem</span>
+        <span><a href="http://betzata-abd.org" target="_blank" rel="noopener noreferrer">betzata-abd.org</a></span>
       </div>
     </footer>
+  </div>
+
+  <!-- MODAL SARAN AKSI KEBIASAAN -->
+  <div
+    class="action-modal-backdrop hidden"
+    id="habitActionModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="actionModalTitle"
+    aria-describedby="actionModalSubtitle"
+  >
+    <div class="action-modal-dialog" role="document">
+      <div class="action-modal-header">
+        <div>
+          <span class="action-modal-eyebrow" id="actionModalBadge">Saran Tindakan Praktis</span>
+          <h2 class="action-modal-title" id="actionModalTitle">Nama Kebiasaan</h2>
+          <p class="action-modal-subtitle" id="actionModalSubtitle">Konteks gelombang aktif</p>
+        </div>
+        <button
+          type="button"
+          class="action-modal-close"
+          id="closeActionModalBtn"
+          aria-label="Tutup jendela saran aksi"
+        >
+          &times;
+        </button>
+      </div>
+
+      <div class="action-modal-body" id="actionModalBody"></div>
+
+      <div class="action-modal-footer">
+        <button type="button" class="action-modal-done-btn" id="doneActionModalBtn">Tutup</button>
+      </div>
+    </div>
   </div>
 </body>
 </html>
