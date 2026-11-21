@@ -8,6 +8,72 @@ const HABITS = [
   { key: "berolahraga", label: "Berolahraga", color: "#ca8a04" }
 ];
 
+const HABIT_ACTIONS = {
+  bangunPagi: {
+    title: "Bangun pagi",
+    schoolActions: [
+      "Buka sesi awal pembelajaran dengan sapaan hangat dan pemeriksaan kesiapan diri singkat agar siswa merasakan manfaat datang tepat waktu dengan tenang.",
+      "Fasilitasi refleksi ringan di kelas bersama wali kelas tentang kendala pagi hari siswa (seperti waktu perjalanan atau persiapan perlengkapan sekolah).",
+      "Dorong siswa menyiapkan tas, seragam, dan perlengkapan belajar pada malam sebelumnya sebagai rutinitas sederhana."
+    ],
+    familyStep: "Ajak siswa dan orang tua menyepakati jam bangun serta pengingat pagi yang realistis di rumah tanpa tekanan berlebihan."
+  },
+  beribadah: {
+    title: "Beribadah",
+    schoolActions: [
+      "Pertahankan pembiasaan doa bersama sebelum dan sesudah kegiatan belajar mengajar secara khidmat dan inklusif.",
+      "Sediakan ruang refleksi nilai spiritual yang relevan dengan kehidupan remaja sehari-hari melalui kegiatan pembinaan karakter sekolah.",
+      "Apresiasi konsistensi siswa dalam menjaga ketertiban dan sikap saling menghormati saat waktu ibadah berlangsung."
+    ],
+    familyStep: "Dorong siswa berbagi praktik kebaikan atau refleksi ibadah harian sederhana bersama keluarga di rumah."
+  },
+  berolahraga: {
+    title: "Berolahraga",
+    schoolActions: [
+      "Sisipkan peregangan aktif atau permainan gerak ringan selama 3–5 menit di sela pergantian jam pelajaran yang panjang.",
+      "Sediakan kegiatan olahraga rekreasional yang inklusif saat jam istirahat atau ekstrakurikuler agar siswa dengan berbagai tingkat kebugaran merasa nyaman ikut serta.",
+      "Ajak siswa mencatat aktivitas fisik harian sederhana (seperti jalan kaki, senam ringan, atau olahraga mandiri) sebagai bagian dari tantangan kebugaran kelas."
+    ],
+    familyStep: "Libatkan siswa dan orang tua untuk meluangkan waktu beraktivitas fisik ringan bersama di akhir pekan, seperti jalan pagi atau senam keluarga."
+  },
+  makanSehat: {
+    title: "Makan sehat/bergizi",
+    schoolActions: [
+      "Ajak siswa mengenali pilihan bekal dan jajanan harian yang lebih bergizi seimbang melalui diskusi singkat atau kampanye poster di kelas.",
+      "Adakan edukasi praktis tentang pentingnya sarapan, konsumsi sayur/buah, serta mengurangi minuman berpemanis secara bertahap.",
+      "Koordinasikan dengan pengelola kantin sekolah untuk menyediakan pilihan menu sehat, higienis, dan terjangkau bagi siswa."
+    ],
+    familyStep: "Dorong orang tua dan siswa merencanakan menu bekal sederhana serta membawa botol air minum isi ulang ke sekolah."
+  },
+  gemarBelajar: {
+    title: "Gemar belajar",
+    schoolActions: [
+      "Gunakan metode belajar kolaboratif singkat atau diskusi kelompok kecil agar siswa terbiasa bertukar gagasan dan bertanya secara aktif.",
+      "Bantu siswa menyusun target belajar mingguan yang terukur dan realistis sehingga beban tugas terasa lebih terkelola.",
+      "Manfaatkan pojok baca kelas atau sumber belajar variatif untuk menumbuhkan rasa ingin tahu di luar tugas rutin."
+    ],
+    familyStep: "Ajak orang tua menyediakan suasana rumah yang tenang dan mendukung waktu belajar mandiri siswa selama 30–60 menit setiap hari."
+  },
+  bermasyarakat: {
+    title: "Bermasyarakat",
+    schoolActions: [
+      "Libatkan siswa dalam kegiatan gotong royong menjaga kebersihan kelas, taman sekolah, atau proyek kepedulian sosial di lingkungan sekitar.",
+      "Beri peran bergilir pada kepengurusan kelas atau kegiatan OSIS agar setiap siswa berlatih bekerja sama dan berkomunikasi dengan empati.",
+      "Apresiasi inisiatif siswa yang membantu teman sebaya maupun warga sekolah dalam kegiatan sehari-hari."
+    ],
+    familyStep: "Dorong siswa berpartisipasi dalam kegiatan sosial atau kerja bakti ringan di lingkungan tempat tinggal bersama keluarga."
+  },
+  tidurCepat: {
+    title: "Tidur cepat",
+    schoolActions: [
+      "Adakan sesi berbagi ringan bersama wali kelas dan guru BK mengenai manajemen waktu sore hingga malam agar siswa tidak menumpuk tugas larut malam.",
+      "Edukasi siswa secara ramah tentang kebiasaan mengurangi penggunaan gawai 30 menit sebelum waktu tidur.",
+      "Selaraskan penjadwalan pengumpulan tugas antar-mata pelajaran bila memungkinkan agar beban belajar siswa tetap seimbang."
+    ],
+    familyStep: "Ajak siswa dan orang tua menyepakati jam istirahat malam yang konsisten serta batas waktu penggunaan layar di rumah."
+  }
+};
+
 const RESPONDENTS = {
   g1: 110,
   g2: 111,
@@ -152,12 +218,186 @@ const WAVE_DATA = {
   }
 };
 
+let activeWaveId = "all";
+let lastFocusedElement = null;
+
+function toSafeNumber(val) {
+  const num = typeof val === "number" ? val : Number(val);
+  return Number.isFinite(num) ? num : null;
+}
+
 function formatIdPercent(num) {
-  return num.toFixed(2).replace(".", ",") + "%";
+  const safe = toSafeNumber(num);
+  if (safe === null) return "N/A";
+  return safe.toFixed(2).replace(".", ",") + "%";
+}
+
+function formatIdPoints(num) {
+  const safe = toSafeNumber(num);
+  if (safe === null) return "N/A";
+  return safe.toFixed(2).replace(".", ",") + " poin";
+}
+
+function getValidHabitEntries(waveObj) {
+  const values = waveObj && waveObj.values ? waveObj.values : {};
+  return HABITS
+    .map((habit) => ({
+      ...habit,
+      value: toSafeNumber(values[habit.key])
+    }))
+    .filter((entry) => entry.value !== null);
 }
 
 function getSortedHabitsForWave(waveObj) {
-  return [...HABITS].sort((a, b) => waveObj.values[b.key] - waveObj.values[a.key]);
+  const entries = getValidHabitEntries(waveObj);
+  return [...entries].sort((a, b) => b.value - a.value);
+}
+
+function getConsistentTopHabit() {
+  const waveIds = ["all", "g1", "g2", "g3", "g4"];
+  for (const habit of HABITS) {
+    const ranks = waveIds.map((wId) => {
+      const w = WAVE_DATA[wId];
+      if (!w) return null;
+      const sorted = getSortedHabitsForWave(w);
+      const idx = sorted.findIndex((item) => item.key === habit.key);
+      return idx === -1 ? null : idx + 1;
+    });
+
+    const isPresentEverywhere = ranks.every((r) => r !== null);
+    const isAlwaysTopTwo = isPresentEverywhere && ranks.every((r) => r <= 2);
+
+    if (isAlwaysTopTwo) {
+      return {
+        habit,
+        ranks,
+        allWaveValue: toSafeNumber(WAVE_DATA.all?.values?.[habit.key])
+      };
+    }
+  }
+  return null;
+}
+
+function renderActionButton(habitKey, habitLabel) {
+  return `
+    <button
+      type="button"
+      class="habit-action-btn"
+      data-action-habit="${habitKey}"
+      aria-haspopup="dialog"
+      aria-label="Lihat saran aksi untuk kebiasaan ${habitLabel}"
+    >
+      <span aria-hidden="true">💡</span>
+      <span>Lihat saran aksi</span>
+    </button>
+  `;
+}
+
+function openHabitActionModal(habitKey, triggerEl) {
+  const modal = document.getElementById("habitActionModal");
+  const titleEl = document.getElementById("actionModalTitle");
+  const subtitleEl = document.getElementById("actionModalSubtitle");
+  const bodyEl = document.getElementById("actionModalBody");
+  const closeBtn = document.getElementById("closeActionModalBtn");
+
+  if (!modal || !titleEl || !subtitleEl || !bodyEl) return;
+
+  lastFocusedElement = triggerEl || document.activeElement;
+
+  const waveObj = WAVE_DATA[activeWaveId] || WAVE_DATA.all;
+  const habitMeta = HABITS.find((h) => h.key === habitKey);
+  const actionInfo = HABIT_ACTIONS[habitKey];
+  const habitLabel = actionInfo?.title || habitMeta?.label || "Kebiasaan 7KAIH";
+  const currentVal = toSafeNumber(waveObj.values?.[habitKey]);
+  const isVerify = waveObj.needsVerificationKey === habitKey;
+
+  titleEl.textContent = habitLabel;
+  subtitleEl.textContent =
+    currentVal !== null
+      ? `Capaian pada ${waveObj.shortLabel}: ${formatIdPercent(currentVal)}`
+      : `Konteks: ${waveObj.shortLabel}`;
+
+  if (!actionInfo || !Array.isArray(actionInfo.schoolActions) || actionInfo.schoolActions.length === 0) {
+    bodyEl.innerHTML = `
+      <p class="award-desc">Saran tindakan praktis untuk kebiasaan <strong>${habitLabel}</strong> belum tersedia saat ini.</p>
+    `;
+  } else {
+    const verifyHtml = isVerify
+      ? `<div class="action-verify-note" role="status">
+           <strong>Catatan Data (${waveObj.label}):</strong> ${waveObj.verificationNote || "Data memerlukan verifikasi label."} Saran di bawah tetap dapat digunakan sebagai langkah pembiasaan umum yang positif.
+         </div>`
+      : "";
+
+    const stepsHtml = actionInfo.schoolActions
+      .map((step) => `<li>${step}</li>`)
+      .join("");
+
+    const familyHtml = actionInfo.familyStep
+      ? `<div class="action-collab-box">
+           <h3>Langkah Sederhana Bersama Siswa / Orang Tua</h3>
+           <p>${actionInfo.familyStep}</p>
+         </div>`
+      : "";
+
+    bodyEl.innerHTML = `
+      ${verifyHtml}
+      <div>
+        <h3 class="action-group-title">Saran Tindakan Praktis untuk Guru &amp; Sekolah</h3>
+        <ol class="action-steps-list">
+          ${stepsHtml}
+        </ol>
+      </div>
+      ${familyHtml}
+    `;
+  }
+
+  modal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+
+  if (closeBtn) {
+    closeBtn.focus();
+  }
+}
+
+function closeHabitActionModal() {
+  const modal = document.getElementById("habitActionModal");
+  if (!modal || modal.classList.contains("hidden")) return;
+
+  modal.classList.add("hidden");
+  document.body.classList.remove("modal-open");
+
+  if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+    lastFocusedElement.focus();
+  }
+}
+
+function handleModalKeydown(e) {
+  const modal = document.getElementById("habitActionModal");
+  if (!modal || modal.classList.contains("hidden")) return;
+
+  if (e.key === "Escape") {
+    e.preventDefault();
+    closeHabitActionModal();
+    return;
+  }
+
+  if (e.key === "Tab") {
+    const focusable = modal.querySelectorAll(
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
 }
 
 let barChartInstance = null;
@@ -165,15 +405,143 @@ let doughnutChartInstance = null;
 let radarChartInstance = null;
 let lineTrendChartInstance = null;
 
-function renderRespondentStrip(activeWaveId) {
+function renderAchievementInsights(waveObj) {
+  const grid = document.getElementById("achievementGrid");
+  const subtext = document.getElementById("achievementSubtext");
+  const badge = document.getElementById("achievementWaveBadge");
+
+  if (!grid || !subtext || !badge) return;
+
+  badge.textContent = waveObj.label;
+  subtext.textContent = `Sorotan penghargaan & metrik utama berdasarkan data ${waveObj.shortLabel}.`;
+
+  const sorted = getSortedHabitsForWave(waveObj);
+
+  if (sorted.length === 0) {
+    grid.innerHTML = `
+      <article class="award-card award-card--focus">
+        <div class="award-top">
+          <span class="award-badge">Info Data</span>
+          <span class="award-medal" aria-hidden="true">ℹ️</span>
+        </div>
+        <h3 class="award-title">Data Belum Tersedia</h3>
+        <div class="award-metric">—</div>
+        <p class="award-desc">Nilai persentase kebiasaan belum tersedia untuk gelombang yang dipilih.</p>
+      </article>
+    `;
+    return;
+  }
+
+  const highest = sorted[0];
+  const lowest = sorted[sorted.length - 1];
+  const spread = highest.value - lowest.value;
+  const aboveThreshold = sorted.filter((item) => item.value >= 75);
+  const isLowestVerify = waveObj.needsVerificationKey === lowest.key;
+  const consistentInfo = getConsistentTopHabit();
+
+  const cards = [];
+
+  // 1. Capaian Tertinggi
+  cards.push(`
+    <article class="award-card award-card--gold">
+      <div class="award-top">
+        <span class="award-badge">Capaian Tertinggi</span>
+        <span class="award-medal" aria-hidden="true">🏆</span>
+      </div>
+      <div>
+        <h3 class="award-title">${highest.label}</h3>
+        <div class="award-metric">${formatIdPercent(highest.value)}</div>
+      </div>
+      <p class="award-desc">Peringkat #1 pada ${waveObj.shortLabel} di antara ${sorted.length} kebiasaan terdata.</p>
+      <div class="award-footnote">Penghargaan Puncak Capaian</div>
+      ${renderActionButton(highest.key, highest.label)}
+    </article>
+  `);
+
+  // 2. Konsisten (berdasarkan konsistensi peringkat teratas lintas gelombang)
+  if (consistentInfo) {
+    const activeVal = toSafeNumber(waveObj.values?.[consistentInfo.habit.key]);
+    cards.push(`
+      <article class="award-card award-card--blue">
+        <div class="award-top">
+          <span class="award-badge">Konsisten</span>
+          <span class="award-medal" aria-hidden="true">⭐</span>
+        </div>
+        <div>
+          <h3 class="award-title">${consistentInfo.habit.label}</h3>
+          <div class="award-metric">${formatIdPercent(activeVal)}</div>
+        </div>
+        <p class="award-desc">Selalu berada di 2 besar pada Gabungan G1–G4 dan Gelombang 1–4.</p>
+        <div class="award-footnote">Konsisten Peringkat #1–#2 Lintas Gelombang</div>
+        ${renderActionButton(consistentInfo.habit.key, consistentInfo.habit.label)}
+      </article>
+    `);
+  } else {
+    cards.push(`
+      <article class="award-card award-card--blue">
+        <div class="award-top">
+          <span class="award-badge">Ambang ≥ 75%</span>
+          <span class="award-medal" aria-hidden="true">⭐</span>
+        </div>
+        <div>
+          <h3 class="award-title">${aboveThreshold.length} dari ${sorted.length} Kebiasaan</h3>
+          <div class="award-metric">${aboveThreshold.length} Kebiasaan</div>
+        </div>
+        <p class="award-desc">Mencapai nilai di atas atau sama dengan 75,00% pada ${waveObj.shortLabel}.</p>
+        <div class="award-footnote">Indikator Ambang Capaian 75%</div>
+      </article>
+    `);
+  }
+
+  // 3. Perlu Perhatian (Capaian Terendah)
+  cards.push(`
+    <article class="award-card ${isLowestVerify ? "award-card--verify" : "award-card--focus"}">
+      <div class="award-top">
+        <span class="award-badge">${isLowestVerify ? "Perlu Diverifikasi" : "Perlu Perhatian"}</span>
+        <span class="award-medal" aria-hidden="true">🎯</span>
+      </div>
+      <div>
+        <h3 class="award-title">${lowest.label}</h3>
+        <div class="award-metric">${formatIdPercent(lowest.value)}</div>
+      </div>
+      <p class="award-desc">${
+        isLowestVerify
+          ? "Nilai literal terendah pada Gelombang 3; catatan koreksi label 81,43% perlu diverifikasi."
+          : `Posisi terendah pada ${waveObj.shortLabel}; berpotensi menjadi fokus pendampingan.`
+      }</p>
+      <div class="award-footnote">${isLowestVerify ? "Status: Menunggu Verifikasi Label" : "Fokus Penguatan Lanjutan"}</div>
+      ${renderActionButton(lowest.key, lowest.label)}
+    </article>
+  `);
+
+  // 4. Selisih Capaian & Ambang ≥ 75%
+  cards.push(`
+    <article class="award-card award-card--focus">
+      <div class="award-top">
+        <span class="award-badge">Selisih Capaian</span>
+        <span class="award-medal" aria-hidden="true">🏅</span>
+      </div>
+      <div>
+        <h3 class="award-title">${formatIdPoints(spread)}</h3>
+        <div class="award-metric">${aboveThreshold.length}/${sorted.length} ≥ 75%</div>
+      </div>
+      <p class="award-desc">Jarak antara ${highest.label} (${formatIdPercent(highest.value)}) dan ${lowest.label} (${formatIdPercent(lowest.value)}).</p>
+      <div class="award-footnote">Rentang Nilai &amp; Ambang 75%</div>
+    </article>
+  `);
+
+  grid.innerHTML = cards.join("");
+}
+
+function renderRespondentStrip(waveId) {
   document.querySelectorAll(".resp-card").forEach((card) => {
     const waveKey = card.getAttribute("data-resp-wave");
-    card.classList.toggle("is-highlighted", activeWaveId === waveKey);
+    card.classList.toggle("is-highlighted", waveId === waveKey);
   });
 
   const chip = document.getElementById("activeRespondentChip");
-  if (chip) {
-    chip.textContent = WAVE_DATA[activeWaveId].respondentsText;
+  if (chip && WAVE_DATA[waveId]) {
+    chip.textContent = WAVE_DATA[waveId].respondentsText;
   }
 }
 
@@ -185,9 +553,14 @@ function renderHabitCards(waveObj) {
   subtext.textContent = waveObj.subtext;
   const sortedHabits = getSortedHabitsForWave(waveObj);
 
+  if (sortedHabits.length === 0) {
+    grid.innerHTML = `<p class="section-sub">Tidak ada data indikator kebiasaan untuk ditampilkan.</p>`;
+    return;
+  }
+
   grid.innerHTML = sortedHabits
     .map((habit) => {
-      const val = waveObj.values[habit.key];
+      const val = habit.value;
       const isVerify = waveObj.needsVerificationKey === habit.key;
       const pctWidth = Math.max(0, Math.min(100, val));
 
@@ -200,12 +573,13 @@ function renderHabitCards(waveObj) {
           ${
             isVerify
               ? `<span class="verify-badge">Perlu Diverifikasi</span>
-                 <p class="verify-note">${waveObj.verificationNote}</p>`
+                 <p class="verify-note">${waveObj.verificationNote || "Perlu verifikasi data."}</p>`
               : ""
           }
           <div class="progress-track" aria-hidden="true">
             <div class="progress-fill" style="width: ${pctWidth}%;"></div>
           </div>
+          ${renderActionButton(habit.key, habit.label)}
         </article>
       `;
     })
@@ -226,257 +600,281 @@ function renderInsight(waveObj) {
 
   bannerEl.classList.toggle("hidden", waveObj.id !== "g3");
 
-  findingsEl.innerHTML = waveObj.findings.map((item) => `<li>${item}</li>`).join("");
-  recsEl.innerHTML = waveObj.recommendations.map((item) => `<li>${item}</li>`).join("");
+  const findings = Array.isArray(waveObj.findings) && waveObj.findings.length > 0
+    ? waveObj.findings
+    : ["Belum ada catatan temuan untuk gelombang ini."];
+  const recommendations = Array.isArray(waveObj.recommendations) && waveObj.recommendations.length > 0
+    ? waveObj.recommendations
+    : ["Belum ada rekomendasi tindak lanjut untuk gelombang ini."];
+
+  findingsEl.innerHTML = findings.map((item) => `<li>${item}</li>`).join("");
+  recsEl.innerHTML = recommendations.map((item) => `<li>${item}</li>`).join("");
+}
+
+function setTextIfExists(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
 }
 
 function buildCharts(waveObj) {
   if (typeof Chart === "undefined") return;
 
-  const sortedHabits = getSortedHabitsForWave(waveObj);
-  const labels = sortedHabits.map((h) => h.label);
-  const dataVals = sortedHabits.map((h) => waveObj.values[h.key]);
+  try {
+    const sortedHabits = getSortedHabitsForWave(waveObj);
+    const labels = sortedHabits.map((h) => h.label);
+    const dataVals = sortedHabits.map((h) => h.value);
 
-  const barColors = sortedHabits.map((h) =>
-    waveObj.needsVerificationKey === h.key ? "#eab308" : "#114094"
-  );
-  const barBorders = sortedHabits.map((h) =>
-    waveObj.needsVerificationKey === h.key ? "#854d0e" : "#0b2d6b"
-  );
+    const barColors = sortedHabits.map((h) =>
+      waveObj.needsVerificationKey === h.key ? "#eab308" : "#114094"
+    );
+    const barBorders = sortedHabits.map((h) =>
+      waveObj.needsVerificationKey === h.key ? "#854d0e" : "#0b2d6b"
+    );
 
-  document.getElementById("barChartTitle").textContent = `Peringkat Persentase — ${waveObj.label}`;
-  document.getElementById("barChartSub").textContent = `Urutan dari tertinggi ke terendah (${waveObj.shortLabel})`;
+    setTextIfExists("barChartTitle", `Peringkat Persentase — ${waveObj.label}`);
+    setTextIfExists("barChartSub", `Urutan dari tertinggi ke terendah (${waveObj.shortLabel})`);
 
-  if (barChartInstance) barChartInstance.destroy();
-  barChartInstance = new Chart(document.getElementById("barChart"), {
-    type: "bar",
-    data: {
-      labels,
-      datasets: [
-        {
-          label: "Persentase (%)",
-          data: dataVals,
-          backgroundColor: barColors,
-          borderColor: barBorders,
-          borderWidth: 1.5,
-          borderRadius: 6
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 100,
-          ticks: {
-            callback: (v) => v + "%"
-          }
-        }
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => {
-              const habitKey = sortedHabits[ctx.dataIndex].key;
-              const baseText = `${ctx.dataset.label}: ${formatIdPercent(ctx.parsed.y)}`;
-              if (waveObj.needsVerificationKey === habitKey) {
-                return [baseText, "Status: Perlu Diverifikasi (Catatan koreksi label: 81,43%)"];
+    const barCanvas = document.getElementById("barChart");
+    if (barCanvas) {
+      if (barChartInstance) barChartInstance.destroy();
+      barChartInstance = new Chart(barCanvas, {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Persentase (%)",
+              data: dataVals,
+              backgroundColor: barColors,
+              borderColor: barBorders,
+              borderWidth: 1.5,
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: {
+                callback: (v) => v + "%"
               }
-              return baseText;
-            }
-          }
-        }
-      }
-    }
-  });
-
-  document.getElementById("doughnutChartTitle").textContent = `Proporsi Relatif — ${waveObj.label}`;
-  document.getElementById("doughnutChartSub").textContent = `Porsi relatif nilai persentase 7 kebiasaan (${waveObj.shortLabel})`;
-
-  const palette = ["#0b2d6b", "#1756c2", "#2563eb", "#0284c7", "#38bdf8", "#facc15", "#eab308"];
-  if (doughnutChartInstance) doughnutChartInstance.destroy();
-  doughnutChartInstance = new Chart(document.getElementById("doughnutChart"), {
-    type: "doughnut",
-    data: {
-      labels,
-      datasets: [
-        {
-          data: dataVals,
-          backgroundColor: palette,
-          borderColor: "#ffffff",
-          borderWidth: 2
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      cutout: "58%",
-      plugins: {
-        legend: {
-          position: "bottom",
-          labels: { boxWidth: 12, font: { size: 11 } }
-        },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => `${ctx.label}: ${formatIdPercent(ctx.parsed)}`
-          }
-        }
-      }
-    }
-  });
-
-  document.getElementById("radarChartTitle").textContent = `Profil 7 Kebiasaan — ${waveObj.label}`;
-  document.getElementById("radarChartSub").textContent = `Pola capaian seluruh kebiasaan (${waveObj.shortLabel})`;
-
-  const radarLabels = HABITS.map((h) => h.label);
-  const radarValues = HABITS.map((h) => waveObj.values[h.key]);
-
-  if (radarChartInstance) radarChartInstance.destroy();
-  radarChartInstance = new Chart(document.getElementById("radarChart"), {
-    type: "radar",
-    data: {
-      labels: radarLabels,
-      datasets: [
-        {
-          label: waveObj.label,
-          data: radarValues,
-          fill: true,
-          backgroundColor: "rgba(23, 86, 194, 0.18)",
-          borderColor: "#114094",
-          pointBackgroundColor: "#eab308",
-          pointBorderColor: "#0b2d6b",
-          pointRadius: 4
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        r: {
-          min: 40,
-          max: 100,
-          ticks: {
-            stepSize: 15,
-            callback: (v) => v + "%"
-          }
-        }
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => `${ctx.label}: ${formatIdPercent(ctx.parsed.r)}`
-          }
-        }
-      }
-    }
-  });
-
-  if (!lineTrendChartInstance) {
-    const waveKeys = ["g1", "g2", "g3", "g4"];
-    const waveLabels = [
-      `Gelombang 1 (n=${RESPONDENTS.g1})`,
-      `Gelombang 2 (n=${RESPONDENTS.g2})`,
-      `Gelombang 3 (n=${RESPONDENTS.g3})`,
-      `Gelombang 4 (n=${RESPONDENTS.g4})`
-    ];
-
-    const lineColors = [
-      "#0b2d6b",
-      "#1d4ed8",
-      "#0284c7",
-      "#eab308",
-      "#0ea5e9",
-      "#6366f1",
-      "#ca8a04"
-    ];
-
-    const datasets = HABITS.map((habit, idx) => {
-      const series = waveKeys.map((wk) => WAVE_DATA[wk].values[habit.key]);
-      const pointBg = waveKeys.map((wk) =>
-        wk === "g3" && habit.key === "bangunPagi" ? "#facc15" : lineColors[idx]
-      );
-      const pointRadius = waveKeys.map((wk) =>
-        wk === "g3" && habit.key === "bangunPagi" ? 7 : 4
-      );
-      const pointBorder = waveKeys.map((wk) =>
-        wk === "g3" && habit.key === "bangunPagi" ? "#854d0e" : "#ffffff"
-      );
-
-      return {
-        label: habit.label,
-        data: series,
-        borderColor: lineColors[idx],
-        backgroundColor: lineColors[idx],
-        borderWidth: habit.key === "bangunPagi" ? 2.6 : 2,
-        tension: 0.25,
-        pointBackgroundColor: pointBg,
-        pointBorderColor: pointBorder,
-        pointBorderWidth: 2,
-        pointRadius
-      };
-    });
-
-    lineTrendChartInstance = new Chart(document.getElementById("lineTrendChart"), {
-      type: "line",
-      data: {
-        labels: waveLabels,
-        datasets
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: {
-          mode: "index",
-          intersect: false
-        },
-        scales: {
-          y: {
-            min: 45,
-            max: 95,
-            ticks: {
-              callback: (v) => v + "%"
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            position: "bottom",
-            labels: {
-              usePointStyle: true,
-              boxWidth: 10,
-              font: { size: 11.5 }
             }
           },
-          tooltip: {
-            callbacks: {
-              label: (ctx) => {
-                const isG3Bangun = ctx.dataIndex === 2 && ctx.dataset.label === "Bangun pagi";
-                const base = `${ctx.dataset.label}: ${formatIdPercent(ctx.parsed.y)}`;
-                return isG3Bangun
-                  ? `${base} [Perlu Diverifikasi: nilai literal 50,28% | koreksi label 81,43%]`
-                  : base;
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const habitItem = sortedHabits[ctx.dataIndex];
+                  const baseText = `${ctx.dataset.label}: ${formatIdPercent(ctx.parsed.y)}`;
+                  if (habitItem && waveObj.needsVerificationKey === habitItem.key) {
+                    return [baseText, "Status: Perlu Diverifikasi (Catatan koreksi label: 81,43%)"];
+                  }
+                  return baseText;
+                }
               }
             }
           }
         }
-      }
-    });
+      });
+    }
+
+    setTextIfExists("doughnutChartTitle", `Proporsi Relatif — ${waveObj.label}`);
+    setTextIfExists("doughnutChartSub", `Porsi relatif nilai persentase 7 kebiasaan (${waveObj.shortLabel})`);
+
+    const doughnutCanvas = document.getElementById("doughnutChart");
+    if (doughnutCanvas) {
+      const palette = ["#0b2d6b", "#1756c2", "#2563eb", "#0284c7", "#38bdf8", "#facc15", "#eab308"];
+      if (doughnutChartInstance) doughnutChartInstance.destroy();
+      doughnutChartInstance = new Chart(doughnutCanvas, {
+        type: "doughnut",
+        data: {
+          labels,
+          datasets: [
+            {
+              data: dataVals,
+              backgroundColor: palette,
+              borderColor: "#ffffff",
+              borderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "58%",
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: { boxWidth: 12, font: { size: 11 } }
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.label}: ${formatIdPercent(ctx.parsed)}`
+              }
+            }
+          }
+        }
+      });
+    }
+
+    setTextIfExists("radarChartTitle", `Profil 7 Kebiasaan — ${waveObj.label}`);
+    setTextIfExists("radarChartSub", `Pola capaian seluruh kebiasaan (${waveObj.shortLabel})`);
+
+    const radarCanvas = document.getElementById("radarChart");
+    if (radarCanvas) {
+      const radarEntries = getValidHabitEntries(waveObj);
+      const radarLabels = radarEntries.map((h) => h.label);
+      const radarValues = radarEntries.map((h) => h.value);
+
+      if (radarChartInstance) radarChartInstance.destroy();
+      radarChartInstance = new Chart(radarCanvas, {
+        type: "radar",
+        data: {
+          labels: radarLabels,
+          datasets: [
+            {
+              label: waveObj.label,
+              data: radarValues,
+              fill: true,
+              backgroundColor: "rgba(23, 86, 194, 0.18)",
+              borderColor: "#114094",
+              pointBackgroundColor: "#eab308",
+              pointBorderColor: "#0b2d6b",
+              pointRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              min: 40,
+              max: 100,
+              ticks: {
+                stepSize: 15,
+                callback: (v) => v + "%"
+              }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.label}: ${formatIdPercent(ctx.parsed.r)}`
+              }
+            }
+          }
+        }
+      });
+    }
+
+    const lineCanvas = document.getElementById("lineTrendChart");
+    if (!lineTrendChartInstance && lineCanvas) {
+      const waveKeys = ["g1", "g2", "g3", "g4"];
+      const waveLabels = waveKeys.map(
+        (wk, idx) => `Gelombang ${idx + 1} (n=${RESPONDENTS[wk] ?? "N/A"})`
+      );
+
+      const lineColors = [
+        "#0b2d6b",
+        "#1d4ed8",
+        "#0284c7",
+        "#eab308",
+        "#0ea5e9",
+        "#6366f1",
+        "#ca8a04"
+      ];
+
+      const datasets = HABITS.map((habit, idx) => {
+        const series = waveKeys.map((wk) => toSafeNumber(WAVE_DATA[wk]?.values?.[habit.key]));
+        const baseColor = lineColors[idx % lineColors.length];
+
+        return {
+          label: habit.label,
+          data: series,
+          borderColor: baseColor,
+          backgroundColor: baseColor,
+          borderWidth: habit.key === "bangunPagi" ? 2.6 : 2,
+          tension: 0.25,
+          pointBackgroundColor: waveKeys.map((wk) =>
+            wk === "g3" && habit.key === "bangunPagi" ? "#facc15" : baseColor
+          ),
+          pointBorderColor: waveKeys.map((wk) =>
+            wk === "g3" && habit.key === "bangunPagi" ? "#854d0e" : "#ffffff"
+          ),
+          pointBorderWidth: 2,
+          pointRadius: waveKeys.map((wk) =>
+            wk === "g3" && habit.key === "bangunPagi" ? 7 : 4
+          )
+        };
+      });
+
+      lineTrendChartInstance = new Chart(lineCanvas, {
+        type: "line",
+        data: {
+          labels: waveLabels,
+          datasets
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: "index",
+            intersect: false
+          },
+          scales: {
+            y: {
+              min: 45,
+              max: 95,
+              ticks: {
+                callback: (v) => v + "%"
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                usePointStyle: true,
+                boxWidth: 10,
+                font: { size: 11.5 }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const isG3Bangun = ctx.dataIndex === 2 && ctx.dataset.label === "Bangun pagi";
+                  const base = `${ctx.dataset.label}: ${formatIdPercent(ctx.parsed.y)}`;
+                  return isG3Bangun
+                    ? `${base} [Perlu Diverifikasi: nilai literal 50,28% | koreksi label 81,43%]`
+                    : base;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  } catch (err) {
+    console.error("Gagal merender visualisasi grafik:", err);
   }
 }
 
 function applyWaveFilter(waveId) {
   const waveObj = WAVE_DATA[waveId] || WAVE_DATA.all;
+  activeWaveId = waveObj.id;
 
   document.querySelectorAll(".filter-btn").forEach((btn) => {
     btn.classList.toggle("active", btn.getAttribute("data-wave") === waveObj.id);
   });
 
+  renderAchievementInsights(waveObj);
   renderRespondentStrip(waveObj.id);
   renderHabitCards(waveObj);
   renderInsight(waveObj);
@@ -490,6 +888,33 @@ document.addEventListener("DOMContentLoaded", () => {
       applyWaveFilter(selectedWave);
     });
   });
+
+  // Event delegation untuk tombol "Lihat saran aksi" pada seluruh card
+  document.addEventListener("click", (event) => {
+    const actionBtn = event.target.closest("[data-action-habit]");
+    if (actionBtn) {
+      const habitKey = actionBtn.getAttribute("data-action-habit");
+      openHabitActionModal(habitKey, actionBtn);
+      return;
+    }
+
+    const modalBackdrop = document.getElementById("habitActionModal");
+    if (modalBackdrop && event.target === modalBackdrop) {
+      closeHabitActionModal();
+    }
+  });
+
+  const closeModalBtn = document.getElementById("closeActionModalBtn");
+  const doneModalBtn = document.getElementById("doneActionModalBtn");
+
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener("click", closeHabitActionModal);
+  }
+  if (doneModalBtn) {
+    doneModalBtn.addEventListener("click", closeHabitActionModal);
+  }
+
+  document.addEventListener("keydown", handleModalKeydown);
 
   applyWaveFilter("all");
 });
