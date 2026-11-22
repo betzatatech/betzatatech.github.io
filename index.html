@@ -14,7 +14,6 @@
 </head>
 <body>
   <div class="app-shell">
-    <!-- HEADER -->
     <header class="top-header">
       <div class="header-inner">
         <div class="brand-group">
@@ -27,9 +26,7 @@
       </div>
     </header>
 
-    <!-- MAIN CONTENT -->
     <main class="main-content">
-      <!-- ACHIEVEMENT INSIGHT CARDS (BEFORE WAVE FILTER) -->
       <section class="section-block achievement-section" aria-labelledby="heading-achievement-insights">
         <div class="section-head achievement-head">
           <div>
@@ -43,7 +40,6 @@
         <div class="achievement-grid" id="achievementGrid" aria-live="polite"></div>
       </section>
 
-      <!-- FILTER BAR & WAVE RESPONDENT SUMMARY -->
       <section class="control-panel" aria-label="Filter Gelombang dan Ringkasan Responden">
         <div class="filter-bar">
           <span class="filter-label">Pilih Gelombang:</span>
@@ -76,7 +72,6 @@
         </div>
       </section>
 
-      <!-- 7 HABIT INDICATOR CARDS -->
       <section class="section-block" aria-labelledby="heading-indikator">
         <div class="section-head">
           <div>
@@ -87,7 +82,6 @@
         <div class="habits-grid" id="habitsGrid"></div>
       </section>
 
-      <!-- VISUALIZATIONS GRID -->
       <section class="section-block" aria-labelledby="heading-visual">
         <div class="section-head">
           <div>
@@ -151,7 +145,6 @@
         </div>
       </section>
 
-      <!-- GEMINI INSIGHT SECTION -->
       <section class="section-block" aria-labelledby="heading-insight">
         <div class="insight-card" id="insightBox">
           <div class="insight-top">
@@ -181,7 +174,6 @@
       </section>
     </main>
 
-    <!-- FOOTER -->
     <footer class="site-footer">
       <div class="footer-inner">
         <div class="footer-col">
@@ -210,6 +202,18 @@
           </ul>
         </div>
       </div>
+      
+      <div class="footer-member-strip" aria-label="Member of">
+        <span class="footer-member-label">Member of</span>
+        <div class="footer-member-box">
+          <img
+            src="./image/logs.png"
+            alt="Member of Association of Christian Schools International, Majelis Pendidikan Kristen di Indonesia, dan Association of Classical Christian Schools"
+            class="footer-member-img"
+          />
+        </div>
+      </div>
+      
       <div class="footer-bottom">
         <span>SMA Betzata Leilem</span>
         <span><a href="http://betzata-abd.org" target="_blank" rel="noopener noreferrer">betzata-abd.org</a></span>
@@ -217,7 +221,6 @@
     </footer>
   </div>
 
-  <!-- MODAL SARAN AKSI KEBIASAAN -->
   <div
     class="action-modal-backdrop hidden"
     id="habitActionModal"
