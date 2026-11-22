@@ -963,6 +963,44 @@ body.modal-open {
   color: #e2e8f0;
 }
 
+.footer-member-strip {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 1.25rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+}
+
+.footer-member-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--yellow-300);
+}
+
+.footer-member-box {
+  background-color: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.9rem;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-member-img {
+  display: block;
+  width: auto;
+  max-width: min(540px, 100%);
+  max-height: 54px;
+  height: auto;
+  object-fit: contain;
+}
+
 .footer-bottom {
   max-width: 1240px;
   margin: 0 auto;
